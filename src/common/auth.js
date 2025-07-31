@@ -34,10 +34,10 @@ export async function login(email, password) {
   
   if (userError) {
     await supabase.auth.signOut();
-    throw new Error('El perfil del usuario no fue encontrado en la base de datos.');
+    throw new Error('El perfil del usuario no fue encontrado en la base de datos. (Verifica las RLS)');
   }
 
-  // 3. (NUEVO) En una segunda consulta, buscamos los clientes asignados a este usuario
+  // 3. En una segunda consulta, buscamos los clientes asignados
   let assignedClientIds = [];
   if (userData.role === 'operario' || userData.role === 'supervisor') {
     const { data: clienteData, error: clienteError } = await supabase
