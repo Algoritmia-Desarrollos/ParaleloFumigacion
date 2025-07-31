@@ -1,0 +1,8 @@
+[build]
+  publish = "."
+  command = ""
+
+[[redirects]]
+  from = "/admin/dashboard"
+  to = "/src/admin/dashboard.html"
+  status = 200

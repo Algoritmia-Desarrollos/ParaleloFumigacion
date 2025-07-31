@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fagaz - Nueva Operación</title>
+    <link rel="icon" href="/public/assets/img/logohead.webp" type="image/png">
+
+    <link rel="stylesheet" href="../common/styles.css" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+</head>
+<body class="bg-[var(--background-color)] text-[var(--text-primary)]">
+  <div class="relative flex min-h-screen flex-col overflow-x-hidden">
+    <header id="header"></header>
+    <main class="flex-1 px-2 sm:px-4 md:px-10 py-4 sm:py-8">
+      <div class="flex flex-col w-full max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-xl shadow-lg">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-8 text-center">Registrar Nueva Operación</h2>
+        <form class="space-y-6" id="formNuevaOperacion">
+          <div>
+            <label class="label-text block font-medium" for="cliente">1. Cliente</label>
+            <select class="input-field" id="cliente" name="cliente" required>
+              <option value="">Seleccionar Cliente...</option>
+            </select>
+          </div>
+          <div>
+            <label class="label-text block font-medium" for="deposito">2. Depósito (Silo/Celda)</label>
+            <select class="input-field" id="deposito" name="deposito" required disabled>
+              <option value="">Seleccione un cliente primero...</option>
+            </select>
+          </div>
+           <div>
+            <label class="label-text block font-medium" for="mercaderia">3. Mercadería</label>
+            <select class="input-field" id="mercaderia" name="mercaderia" required>
+              <option value="">Cargando mercaderías...</option>
+            </select>
+          </div>
+          <div>
+            <label class="label-text block font-medium" for="metodo_fumigacion">4. Método de Fumigación</label>
+            <select class="input-field" id="metodo_fumigacion" name="metodo_fumigacion" required>
+              <option value="">Seleccionar Método...</option>
+              <option value="pastillas">Pastillas</option>
+              <option value="liquido">Líquido</option>
+            </select>
+          </div>
+          <div>
+            <label class="flex items-center gap-3">
+                <input type="checkbox" id="conCompanero" class="h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500">
+                <span class="font-semibold">Registrar con compañero(s)</span>
+            </label>
+          </div>
+          <div id="companeroContainer" class="hidden">
+              <label class="label-text block font-medium">Seleccionar Compañeros</label>
+              <div id="companero-list" class="mt-2 space-y-2 border rounded-lg p-3 max-h-40 overflow-y-auto">
+                  <!-- Los compañeros se cargarán aquí -->
+              </div>
+              <div class="mt-2">
+                <p class="text-sm font-medium">Seleccionados: <span id="selected-companeros" class="font-normal text-gray-600">Ninguno</span></p>
+              </div>
+          </div>
+          <div class="pt-4 flex justify-end">
+            <button class="btn-primary flex items-center justify-center rounded-lg h-12 px-8 text-base font-bold w-full" type="submit">
+              Iniciar Operación
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="index.js"></script>
+</body>
+</html>

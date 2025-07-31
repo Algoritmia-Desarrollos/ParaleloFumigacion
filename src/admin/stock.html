@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fagaz - Gestión de Stock</title>
+  <link rel="icon" href="/public/assets/img/logohead.webp" type="image/png">
+
+  <link rel="stylesheet" href="../common/styles.css" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+</head>
+<body class="bg-[var(--background-color)] text-[var(--text-primary)]">
+  <div class="relative flex min-h-screen flex-col overflow-x-hidden">
+    <header id="header"></header>
+    <main class="flex-1 px-2 sm:px-4 md:px-10 lg:px-20 xl:px-40 py-4 sm:py-8">
+      <div class="w-full max-w-6xl mx-auto">
+        <h1 class="text-3xl sm:text-4xl font-bold text-black mb-6">Gestión de Stock</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Stock Actual</h2>
+            <div id="stock-list" class="space-y-4">
+              </div>
+          </div>
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Modificar Stock</h2>
+            <form id="formModificarStock" class="space-y-4">
+              <div>
+                <label for="deposito" class="label-text">Depósito</label>
+                <select id="deposito" class="input-field">
+                  <option value="Baigorria">Baigorria</option>
+                  <option value="Fagaz">Fagaz</option>
+                </select>
+              </div>
+              <div>
+                <label for="tipo_producto" class="label-text">Tipo de Producto</label>
+                <select id="tipo_producto" class="input-field">
+                  <option value="pastillas">Pastillas</option>
+                  <option value="liquido">Líquido</option>
+                </select>
+              </div>
+              <div id="unidad_container">
+                  <label for="unidad" class="label-text">Unidad de Medida</label>
+                  <select id="unidad" class="input-field">
+                    </select>
+              </div>
+              <div>
+                <label for="cantidad" class="label-text">Cantidad</label>
+                <input type="number" id="cantidad" class="input-field" min="0.01" step="0.01" required>
+              </div>
+               <div>
+                <label for="tipo_movimiento" class="label-text">Tipo de Movimiento</label>
+                <select id="tipo_movimiento" class="input-field">
+                  <option value="adicion">Añadir al Stock</option>
+                  <option value="extraccion">Quitar del Stock</option>
+                </select>
+              </div>
+              <button type="submit" class="btn-primary w-full py-3 rounded-lg mt-4">Ejecutar Movimiento</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-lg mt-8">
+          <h2 class="text-xl font-semibold text-gray-700 mb-4">Historial de Movimientos de Stock</h2>
+          <div id="historial-stock" class="overflow-x-auto">
+            </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="stock.js"></script>
+</body>
+</html>

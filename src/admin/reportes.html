@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fagaz - Reportes</title>
+  <link rel="icon" href="/public/assets/img/logohead.webp" type="image/png">
+
+  <link rel="stylesheet" href="../common/styles.css" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+  
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <div class="relative flex min-h-screen flex-col overflow-x-hidden">
+    <header id="header"></header>
+    <main class="flex-1 py-8">
+      <div class="content-container max-w-5xl mx-auto space-y-8">
+        <h1 class="text-3xl sm:text-4xl font-bold text-black">Reportes de Operaciones</h1>
+        
+        <div class="bg-white p-6 rounded-xl shadow-lg">
+          <h2 class="text-xl font-semibold mb-4">Generar Reporte</h2>
+          <form id="formReporte" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 pb-6 border-b">
+            <div id="cliente-filter-container">
+                <label for="filtroCliente" class="label-text">Cliente</label>
+                <select id="filtroCliente" class="input-field"></select>
+            </div>
+            <div>
+                <label for="filtroFecha" class="label-text">Rango de Fechas</label>
+                <input type="text" id="filtroFecha" class="input-field" required>
+            </div>
+            <div class="flex items-end">
+              <button type="submit" class="btn-primary w-full py-3 rounded-lg">Generar Reporte</button>
+            </div>
+          </form>
+
+          <div id="reporte-container" class="space-y-6">
+            <!-- El contenido del reporte se generará aquí -->
+          </div>
+
+          <div id="reporte-generado" class="hidden mt-6">
+            <div class="flex justify-between items-center mb-4">
+              <div>
+                <h3 class="text-2xl font-bold" id="reporte-titulo">Reporte de Operaciones</h3>
+                <p class="text-sm text-gray-500" id="reporte-fechas"></p>
+              </div>
+              <button id="exportar-pdf" class="btn-secondary py-2 px-4 rounded-lg flex items-center space-x-2">
+                <span class="material-icons">picture_as_pdf</span>
+                <span>Exportar a PDF</span>
+              </button>
+            </div>
+            <div>
+              <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded-lg shadow-md">
+                  <thead class="bg-gray-800 text-white">
+                    <tr>
+                      <th class="py-3 px-4 text-left">Fecha</th>
+                      <th class="py-3 px-4 text-left">Cliente</th>
+                      <th class="py-3 px-4 text-left">Producto</th>
+                      <th class="py-3 px-4 text-left">Tratamiento</th>
+                      <th class="py-3 px-4 text-left font-bold">Toneladas</th>
+                      <th class="py-3 px-4 text-left">Depósito</th>
+                      <th class="py-3 px-4 text-left">Aprobación</th>
+                    </tr>
+                  </thead>
+                  <tbody id="reporte-tabla-body" class="text-gray-700">
+                    <!-- Las filas del reporte se insertarán aquí -->
+                  </tbody>
+                  <tfoot id="reporte-tabla-foot" class="bg-gray-200 font-bold">
+                    <!-- El pie de la tabla con los totales se insertará aquí -->
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/jspdf-autotable@latest/dist/jspdf.plugin.autotable.js"></script>
+  <script type="module" src="reportes.js"></script>
+</body>
+</html>

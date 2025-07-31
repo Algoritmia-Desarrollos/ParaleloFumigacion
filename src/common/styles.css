@@ -1,0 +1,150 @@
+:root {
+  --primary-color: #53d22b;
+  --secondary-color: #f0fdf4;
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --border-color: #e5e7eb;
+  --background-color: #f9fafb;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+.content-container {
+  width: 100%;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+}
+.operations-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+.expand-icon {
+  transition: transform 0.3s ease;
+}
+tr.is-open .expand-icon {
+  transform: rotate(180deg);
+}
+
+/* Estilos para campos de formulario con íconos */
+.input-wrapper {
+  position: relative;
+}
+.input-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+}
+.input-field {
+  width: 100%;
+  border-radius: 0.5rem;
+  border-width: 1px;
+  border-color: #d1d5db;
+  background-color: #ffffff;
+  color: #1f2937;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  height: 2.75rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.input-field:focus {
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+    border-color: #22c55e;
+    --tw-ring-color: rgb(34 197 94 / 0.4);
+}
+.input-field-with-icon {
+  padding-left: 2.5rem !important;
+}
+
+/* --- ESTILOS DE BOTONES CORREGIDOS --- */
+.btn {
+  font-weight: 600;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+  border-radius: 0.5rem;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+.btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.btn-primary {
+  color: #ffffff;
+  background-color: #53d22b;
+  border-radius: 50px;
+  padding: 2px 10px;
+}
+.btn-primary:hover {
+  opacity: 0.9;
+}
+.btn-secondary {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+.btn-secondary:hover {
+  background-color: #d1d5db;
+}
+.btn-danger {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+.btn-danger:hover {
+  background-color: #b91c1c;
+}
+
+/* Estilos de silo */
+.silo-wrapper { cursor: pointer; transition: transform 0.2s ease; width: 100px; }
+.silo-wrapper:hover { transform: scale(1.05); }
+.silo-svg { width: 100%; height: auto; }
+.silo-outline { fill: #E5E7EB; stroke: #9CA3AF; stroke-width: 2; }
+.silo-fill-rect { fill: #facc15; transition: all 0.5s ease-in-out; }
+
+/* Spinner para cargas */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0,0,0,.1);
+  border-radius: 50%;
+  border-top-color: #4b5563;
+  animation: spin 0.8s ease-in-out infinite;
+}
+
+
+.expand-icon {
+  transition: transform 0.3s ease;
+}
+tr.is-open .expand-icon {
+  transform: rotate(180deg);
+}
