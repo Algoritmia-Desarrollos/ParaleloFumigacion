@@ -5,7 +5,7 @@ import { supabase } from '../common/supabase.js';
 requireRole('admin');
 document.getElementById('header').innerHTML = renderHeader();
 
-// --- Elementos del DOM (sin cambios) ---
+// --- Elementos del DOM ---
 const form = document.getElementById('formUsuario');
 const formTitle = document.getElementById('form-title');
 const btnCancel = document.getElementById('btnCancel');
@@ -22,7 +22,6 @@ const btnLimpiarFiltros = document.getElementById('btnLimpiarFiltros');
 
 let allUsersWithClients = [];
 
-// --- Funciones de renderizado y carga (sin cambios) ---
 async function poblarSelectClientes() {
     const { data, error } = await supabase.from('clientes').select('id, nombre').order('nombre');
     if (error) { console.error('Error cargando clientes:', error); return; }
@@ -35,13 +34,16 @@ async function poblarSelectClientes() {
     `).join('');
     
     const filtroClienteSelect = document.getElementById('filtroCliente');
-    filtroClienteSelect.innerHTML = '<option value="">Todos los Clientes</option>';
-    data.forEach(c => {
-        filtroClienteSelect.innerHTML += `<option value="${c.id}">${c.nombre}</option>`;
-    });
+    if (filtroClienteSelect) {
+        filtroClienteSelect.innerHTML = '<option value="">Todos los Clientes</option>';
+        data.forEach(c => {
+            filtroClienteSelect.innerHTML += `<option value="${c.id}">${c.nombre}</option>`;
+        });
+    }
 }
 
 function renderUsuarios(usersToRender) {
+    if (!listaUsuarios) return;
     if (usersToRender.length === 0) {
         listaUsuarios.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-gray-500">No se encontraron usuarios.</td></tr>`;
         return;
@@ -53,15 +55,12 @@ function renderUsuarios(usersToRender) {
         else if (u.role === 'supervisor') roleClass = 'bg-yellow-100 text-yellow-800';
         else roleClass = 'bg-green-100 text-green-800';
 
-        const passwordDisplay = '••••••••';
-
         return `
             <tr>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm font-medium text-gray-900">${u.nombre} ${u.apellido}</div>
                     <div class="text-sm text-gray-500">${u.email}</div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${passwordDisplay}</td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${roleClass}">${u.role}</span>
                 </td>
@@ -82,7 +81,7 @@ async function cargarYRenderizarUsuarios() {
     if (error) { console.error('Error cargando usuarios:', error); return; }
     
     const { data: relaciones, error: relError } = await supabase.from('operario_clientes').select('operario_id, clientes(id, nombre)');
-    if(relError) { console.error('Error al cargar relaciones de clientes:', relError); return; }
+    if(relError) { console.error('No se pudieron cargar las relaciones de clientes:', relError); return; }
 
     allUsersWithClients = usuarios.map(u => {
         const clientesAsignados = relaciones
@@ -95,6 +94,7 @@ async function cargarYRenderizarUsuarios() {
 }
 
 function aplicarFiltros() {
+    if (!filtroNombre) return;
     const nombreQuery = filtroNombre.value.toLowerCase();
     const rolQuery = document.getElementById('filtroRol').value;
     const clienteQuery = document.getElementById('filtroCliente').value;
@@ -109,6 +109,7 @@ function aplicarFiltros() {
 }
 
 function resetForm() {
+    if (!form) return;
     form.reset();
     usuarioIdField.value = '';
     formTitle.textContent = 'Añadir Nuevo Usuario';
@@ -121,7 +122,6 @@ function resetForm() {
     roleSelect.dispatchEvent(new Event('change'));
 }
 
-// --- Función handleFormSubmit CORREGIDA ---
 async function handleFormSubmit(e) {
     e.preventDefault();
     const id = usuarioIdField.value;
@@ -137,19 +137,16 @@ async function handleFormSubmit(e) {
     let savedUser;
 
     if (id) {
-        // --- ACTUALIZAR USUARIO (FORMA SEGURA) ---
         const { data, error } = await supabase.functions.invoke('actualizar-usuario', { body: { id, ...userData } });
         if (error) return alert(`Error al actualizar: ${error.message}`);
         savedUser = data.user;
     } else {
-        // --- CREAR NUEVO USUARIO (FORMA SEGURA) ---
         if (!userData.password) return alert("La contraseña es obligatoria para nuevos usuarios.");
         const { data, error } = await supabase.functions.invoke('crear-usuario', { body: userData });
         if (error) return alert(`Error al crear usuario: ${error.message}`);
         savedUser = data.user;
     }
 
-    // --- LÓGICA MEJORADA PARA ASIGNAR CLIENTES ---
     if (savedUser.user_metadata.role === 'operario' || savedUser.user_metadata.role === 'supervisor') {
         const userToEdit = allUsersWithClients.find(u => u.id === savedUser.id) || { cliente_ids: [] };
         const clientesActuales = new Set(userToEdit.cliente_ids);
@@ -172,36 +169,37 @@ async function handleFormSubmit(e) {
     await cargarYRenderizarUsuarios();
 }
 
-// --- Event Listeners (sin cambios importantes, solo el de borrado) ---
+// --- Event Listeners ---
 document.addEventListener('DOMContentLoaded', async () => {
     await poblarSelectClientes();
     await cargarYRenderizarUsuarios();
     
     const togglePassword = document.getElementById('togglePassword');
-    togglePassword.addEventListener('click', () => {
-        const isPassword = passwordInput.type === 'password';
-        passwordInput.type = isPassword ? 'text' : 'password';
-        togglePassword.querySelector('.material-icons').textContent = isPassword ? 'visibility_off' : 'visibility';
-    });
+    if (togglePassword) {
+        togglePassword.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            togglePassword.querySelector('.material-icons').textContent = isPassword ? 'visibility_off' : 'visibility';
+        });
+    }
     resetForm();
 });
 
-form.addEventListener('submit', handleFormSubmit);
-btnCancel.addEventListener('click', resetForm);
-roleSelect.addEventListener('change', () => {
+if(form) form.addEventListener('submit', handleFormSubmit);
+if(btnCancel) btnCancel.addEventListener('click', resetForm);
+if(roleSelect) roleSelect.addEventListener('change', () => {
     const showClientes = roleSelect.value === 'operario' || roleSelect.value === 'supervisor';
     clienteCheckboxContainer.classList.toggle('hidden', !showClientes);
 });
 
-filtroNombre.addEventListener('input', aplicarFiltros);
-filtrosForm.addEventListener('change', aplicarFiltros);
-btnLimpiarFiltros.addEventListener('click', () => {
+if(filtrosForm) filtrosForm.addEventListener('input', aplicarFiltros);
+if(filtrosForm) filtrosForm.addEventListener('change', aplicarFiltros);
+if(btnLimpiarFiltros) btnLimpiarFiltros.addEventListener('click', () => {
     filtrosForm.reset();
-    filtroNombre.value = '';
     aplicarFiltros();
 });
 
-listaUsuarios.addEventListener('click', async (e) => {
+if(listaUsuarios) listaUsuarios.addEventListener('click', async (e) => {
     const editButton = e.target.closest('.edit-btn');
     if (editButton) {
         const id = editButton.dataset.id;
